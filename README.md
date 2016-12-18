@@ -1,8 +1,8 @@
 Device tree for TCL M3G
 
-Author: ontherunvaro
+Author: DimaK
 
-Original Author: FlourMo
+Original Author: FlourMo & ontherunvaro
 
 Fork of TCL-M3G-dev/android_device_tcl_q39
 
