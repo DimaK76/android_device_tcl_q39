@@ -396,7 +396,10 @@
          carrier provisioning. If false: hard disabled. If true: then depends on carrier
          provisioning, availability etc -->
     <bool name="config_carrier_vt_available">true</bool>
-    
+   
+    <!-- Package name providing default WebView implementation. -->
+    <string name="config_webViewPackageName" translatable="false">com.google.android.webview</string>
+	
     <!-- Configuartion to support SIM refresh in STK command for dual mode card.-->
     <bool name="config_sim_refresh_for_dual_mode_card">true</bool>
     
