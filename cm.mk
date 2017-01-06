@@ -13,13 +13,42 @@
 # limitations under the License.
 
 # Inherit from the common Open Source product configuration
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+# Inherit common CM stuff
+$(call inherit-product, vendor/cm/config/common_full.mk)
+
+# Default notification/alarm sounds
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.notification_sound=Argon.ogg \
+    ro.config.alarm_alert=Helium.ogg
+
+ifeq ($(TARGET_SCREEN_WIDTH) $(TARGET_SCREEN_HEIGHT),$(space))
+    PRODUCT_COPY_FILES += \
+        vendor/cm/prebuilt/common/bootanimation/480.zip:system/media/bootanimation.zip
+endif
+
+# World APN list
+PRODUCT_COPY_FILES += \
+    vendor/cm/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
+
+# Selective SPN list for operator number who has the problem.
+PRODUCT_COPY_FILES += \
+    vendor/cm/prebuilt/common/etc/selective-spn-conf.xml:system/etc/selective-spn-conf.xml
+
+# Telephony packages
+PRODUCT_PACKAGES += \
+    Mms \
+    CellBroadcastReceiver
+
+# Mms depends on SoundRecorder for recorded audio messages
+PRODUCT_PACKAGES += \
+    SoundRecorder
+
+# Default ringtone
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.ringtone=Orion.ogg
 
 # Inherit from the hardware-specific part of the product configuration
 $(call inherit-product, device/tcl/q39/device.mk)
-
-# Inherit some common CM stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := q39
