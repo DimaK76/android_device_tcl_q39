@@ -95,3 +95,7 @@ ro.sys.fw.use_trim_settings=true
 
 # USB
 ro.sys.usb.default.config=diag,serial_smd,rmnet_bam,mass_storage,adb
+
+# optimization runtime
+dalvik.vm.image-dex2oat-filter=everything
+dalvik.vm.dex2oat-filter=everything
