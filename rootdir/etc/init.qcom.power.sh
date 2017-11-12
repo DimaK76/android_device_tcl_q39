@@ -26,33 +26,11 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # double check here since we only gonna handle 8939 for now
-target=`getprop ro.board.platform`
-case "$target" in
-    "msm8916")
-        if [ -f /sys/devices/soc0/soc_id ]; then
-            soc_id=`cat /sys/devices/soc0/soc_id`
-        else
-            soc_id=`cat /sys/devices/system/soc/soc0/id`
-        fi
-        case "$soc_id" in
-            "239")
-		echo "8939 chip detected."
-		;;
-	    "*")
-		exit 0
-		;;
-	esac
-	;;
-    "*")
-	exit 0
-	;;
-esac
 power_ctrl=`getprop persist.sys.power_ctrl`
 #power_ctrl=1
 power_ctrl_name="power_engine"
 if [ "$power_ctrl" == "1" ]; then
 	setprop persist.sys.power_ctrl.version v2.0
-
 	power_ctrl_interval=`getprop persist.sys.power_ctrl.interval`
 	power_ctrl_off_cores=`getprop persist.sys.power_ctrl.off_cores`
 	power_ctrl_on_threshold=`getprop persist.sys.power_ctrl.on_threshold`
@@ -81,7 +59,7 @@ if [ "$power_ctrl" == "1" ]; then
                 power_ctrl_ctrl_gpu=false
         fi
 	if [ "$power_ctrl_ctrl_gpu_low_max_freq" == "" ]; then
-                power_ctrl_ctrl_gpu_low_max_freq=400000000
+                power_ctrl_ctrl_gpu_low_max_freq=220000000
         fi
 	if [ "$power_ctrl_ctrl_gpu_high_max_freq" == "" ]; then
                 power_ctrl_ctrl_gpu_high_max_freq=550000000

@@ -26,41 +26,13 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-target=`getprop ro.board.platform`
-case "$target" in
-    "msm8916")
-        if [ -f /sys/devices/soc0/soc_id ]; then
-            soc_id=`cat /sys/devices/soc0/soc_id`
-        else
-            soc_id=`cat /sys/devices/system/soc/soc0/id`
-        fi
-        case "$soc_id" in
-           "239")
-		echo 0 > /sys/module/lpm_levels/parameters/sleep_disabled
-		echo 10 > /sys/class/net/rmnet0/queues/rx-0/rps_cpus
-	    ;;
-       esac
-    ;;
-esac
-
-case "$target" in
-    "msm8916")
-
-        if [ -f /sys/devices/soc0/soc_id ]; then
-           soc_id=`cat /sys/devices/soc0/soc_id`
-        else
-           soc_id=`cat /sys/devices/system/soc/soc0/id`
-        fi
+	echo 0 > /sys/module/lpm_levels/parameters/sleep_disabled
+	echo 10 > /sys/class/net/rmnet0/queues/rx-0/rps_cpus
 
         # HMP scheduler settings for 8916, 8936, 8939, 8929
         echo 3 > /proc/sys/kernel/sched_window_stats_policy
 
-        # Apply governor settings for 8916
-	# Apply governor settings for 8936
-
         # Apply governor settings for 8939
-        case "$soc_id" in
-            "239")
                 # HMP scheduler load tracking settings
                 echo 5 > /proc/sys/kernel/sched_ravg_hist_size
                 # HMP Task packing settings for 8939, 8929
@@ -84,41 +56,41 @@ case "$target" in
                 # enable governor for perf cluster
                 echo 1 > /sys/devices/system/cpu/cpu0/online
                 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-				# above_hispeed_delay - время анализа нагрузки на любой частоте cвыше установленной в hispeed_freq;
+		# above_hispeed_delay - время анализа нагрузки на любой частоте cвыше установленной в hispeed_freq;
                 echo "20000 1113600:39000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
                 # go_hispeed_load - загрузка процессора, при которой частота устанавливается равной hispeed_freq;
-				echo 98 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-  				# timer_rate - время анализа нагрузки на любой в данный момент частоте (показатель, используемый для повышения частоты (чем меньше, тем выше производительность и хуже энергоэффективность));
-				echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-				# hispeed_freq - промежуточная частота, на которую говернор будет переводить процессор, если нагрузка превышает go_hispeed_load. Если нагрузка остается высокой в течении времени > above_hispeed_delay, частота может быть увеличина;
-                echo 1113600 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+		echo 98 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
+  		# timer_rate - время анализа нагрузки на любой в данный момент частоте (показатель, используемый для повышения частоты (чем меньше, тем выше производительность и хуже энергоэффективность));
+		echo 40000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+		# hispeed_freq - промежуточная частота, на которую говернор будет переводить процессор, если нагрузка превышает go_hispeed_load. Если нагрузка остается высокой в течении времени > above_hispeed_delay, частота может быть увеличина;
+                echo 960000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
                 echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
-				# target_loads - значения загрузки центрального процессора (в %), по достижении которой, говернор повышает тактовую частоту;
+		# target_loads - значения загрузки центрального процессора (в %), по достижении которой, говернор повышает тактовую частоту;
                 echo 90 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
-				# min_sample_time - минимальный интервал времени ожидания на любой частоте, прежде чем перевести CPU на более низкую частоту;
+		# min_sample_time - минимальный интервал времени ожидания на любой частоте, прежде чем перевести CPU на более низкую частоту;
                 echo 20000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-				# sampling_down_factor - определяет, как часто процессор должен находится на повышенной частоте, когда действительно имеет какую-либо нагрузку. Стандартная задача – быстро понижать частоту. Высокое значение увеличивает производительность, позволяя процессору дольше находится на максимальной частоте при реальной нагрузке на него, нежели понижая частоту при небольшом спадении нагрузки (допустим, смена динамичной сцены на спокойную в игре).
+		# sampling_down_factor - определяет, как часто процессор должен находится на повышенной частоте, когда действительно имеет какую-либо нагрузку. Стандартная задача – быстро понижать частоту. Высокое значение увеличивает производительность, позволяя процессору дольше находится на максимальной частоте при реальной нагрузке на него, нежели понижая частоту при небольшом спадении нагрузки (допустим, смена динамичной сцены на спокойную в игре).
                 echo 30000 > /sys/devices/system/cpu/cpu0/cpufreq/interactive/sampling_down_factor
                 echo 200000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
                 # enable governor for power cluster
                 echo 1 > /sys/devices/system/cpu/cpu4/online
                 echo "interactive" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
-				# above_hispeed_delay - время анализа нагрузки на любой частоте cвыше установленной в hispeed_freq;
+		# above_hispeed_delay - время анализа нагрузки на любой частоте cвыше установленной в hispeed_freq;
                 echo "20000 800000:30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
                 # go_hispeed_load - загрузка процессора, при которой частота устанавливается равной hispeed_freq;
                 echo 90 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-				# timer_rate - время анализа нагрузки на любой в данный момент частоте (показатель, используемый для повышения частоты (чем меньше, тем выше производительность и хуже энергоэффективность));
+		# timer_rate - время анализа нагрузки на любой в данный момент частоте (показатель, используемый для повышения частоты (чем меньше, тем выше производительность и хуже энергоэффективность));
                 echo 20000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
-				# hispeed_freq - промежуточная частота, на которую говернор будет переводить процессор, если нагрузка превышает go_hispeed_load. Если нагрузка остается высокой в течении времени > above_hispeed_delay, частота может быть увеличина;
-                echo 998400 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
+		# hispeed_freq - промежуточная частота, на которую говернор будет переводить процессор, если нагрузка превышает go_hispeed_load. Если нагрузка остается высокой в течении времени > above_hispeed_delay, частота может быть увеличина;
+                echo 499000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
                 echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
-				# target_loads - значения загрузки центрального процессора (в %), по достижении которой, говернор повышает тактовую частоту;
+		# target_loads - значения загрузки центрального процессора (в %), по достижении которой, говернор повышает тактовую частоту;
                 echo 80 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
-				# min_sample_time - минимальный интервал времени ожидания на любой частоте, прежде чем перевести CPU на более низкую частоту;
+		# min_sample_time - минимальный интервал времени ожидания на любой частоте, прежде чем перевести CPU на более низкую частоту;
                 echo 30000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-				# sampling_down_factor - определяет, как часто процессор должен находится на повышенной частоте, когда действительно имеет какую-либо нагрузку. Стандартная задача – быстро понижать частоту. Высокое значение увеличивает производительность, позволяя процессору дольше находится на максимальной частоте при реальной нагрузке на него, нежели понижая частоту при небольшом спадении нагрузки (допустим, смена динамичной сцены на спокойную в игре).
+		# sampling_down_factor - определяет, как часто процессор должен находится на повышенной частоте, когда действительно имеет какую-либо нагрузку. Стандартная задача – быстро понижать частоту. Высокое значение увеличивает производительность, позволяя процессору дольше находится на максимальной частоте при реальной нагрузке на него, нежели понижая частоту при небольшом спадении нагрузки (допустим, смена динамичной сцены на спокойную в игре).
                 echo 35000 > /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor
-                echo 249000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+                echo 200000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
                 # enable thermal core_control now
 		echo 1 > /sys/module/msm_thermal/core_control/enabled
 		sleep 3
@@ -127,19 +99,19 @@ case "$target" in
 		echo 800000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 		echo 1 > /sys/module/msm_thermal/core_control/enabled
                 # Bring up all cores online
-				echo 1 > /sys/devices/system/cpu/cpu1/online
-				echo 1 > /sys/devices/system/cpu/cpu2/online
-				echo 1 > /sys/devices/system/cpu/cpu3/online
-				echo 1 > /sys/devices/system/cpu/cpu4/online
+		echo 1 > /sys/devices/system/cpu/cpu1/online
+		echo 1 > /sys/devices/system/cpu/cpu2/online
+		echo 1 > /sys/devices/system/cpu/cpu3/online
+		echo 1 > /sys/devices/system/cpu/cpu4/online
                 echo 1 > /sys/devices/system/cpu/cpu5/online
                 echo 1 > /sys/devices/system/cpu/cpu6/online
                 echo 1 > /sys/devices/system/cpu/cpu7/online
 				
-				# Enable low power modes
+		# Enable low power modes
                 echo 0 > /sys/module/lpm_levels/parameters/sleep_disabled
-				echo 50 > /proc/sys/kernel/sched_spill_load
-				echo 5 > /proc/sys/kernel/sched_spill_nr_run
-				echo 10 > /proc/sys/kernel/sched_upmigrate_min_nice
+		echo 50 > /proc/sys/kernel/sched_spill_load
+		echo 5 > /proc/sys/kernel/sched_spill_nr_run
+		echo 10 > /proc/sys/kernel/sched_upmigrate_min_nice
 
                 # HMP scheduler (big.Little cluster related) settings
                 echo 98 > /proc/sys/kernel/sched_upmigrate
@@ -151,18 +123,14 @@ case "$target" in
                 echo 1113600 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
                 echo 1 > /sys/module/msm_thermal/core_control/enabled
                 # cpu idle load threshold
-                echo 40 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
-                echo 50 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_load
-                echo 50 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_load
-                echo 50 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_load
+                echo 50 > /sys/devices/system/cpu/cpu0/sched_mostly_idle_load
+                echo 70 > /sys/devices/system/cpu/cpu1/sched_mostly_idle_load
+                echo 70 > /sys/devices/system/cpu/cpu2/sched_mostly_idle_load
+                echo 60 > /sys/devices/system/cpu/cpu3/sched_mostly_idle_load
                 echo 30 > /sys/devices/system/cpu/cpu4/sched_mostly_idle_load
                 echo 30 > /sys/devices/system/cpu/cpu5/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu6/sched_mostly_idle_load
-                echo 30 > /sys/devices/system/cpu/cpu7/sched_mostly_idle_load
-            ;;
-        esac
-    ;;
-esac
+                echo 40 > /sys/devices/system/cpu/cpu6/sched_mostly_idle_load
+                echo 40 > /sys/devices/system/cpu/cpu7/sched_mostly_idle_load
 
 chown -h system /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 chown -h system /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
@@ -179,27 +147,12 @@ case "$emmc_boot"
 esac
 
 # Post-setup services
-case "$target" in
-    "msm8916")
-        if [ -f /sys/devices/soc0/soc_id ]; then
-           soc_id=`cat /sys/devices/soc0/soc_id`
-        else
-           soc_id=`cat /sys/devices/system/soc/soc0/id`
-        fi
-        case $soc_id in
-            "239")
-            setprop ro.min_freq_0 200000
-            setprop ro.min_freq_4 249000
-        ;;
-        esac
+        setprop ro.min_freq_0 200000
+        setprop ro.min_freq_4 200000
         #start perfd after setprop
         start perfd # start perfd on 8916, 8939 and 8929
-    ;;
-esac
 
 # Change adj level and min_free_kbytes setting for lowmemory killer to kick in
-case "$target" in
-    "msm8916")
         # Let kernel know our image version/variant/crm_version
         image_version="10:"
         image_version+=`getprop ro.build.id`
@@ -213,8 +166,6 @@ case "$target" in
         echo $image_version > /sys/devices/soc0/image_version
         echo $image_variant > /sys/devices/soc0/image_variant
         echo $oem_version > /sys/devices/soc0/image_crm_version
-        ;;
-esac
 
 # Create native cgroup and move all tasks to it. Allot 15% real-time
 # bandwidth limit to native cgroup (which is what remains after
