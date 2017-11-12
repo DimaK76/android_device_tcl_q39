@@ -1,1 +1,78 @@
+--- a/src/com/cyanogenmod/lockclock/weather/OpenWeatherMapProvider.java
++++ b/src/com/cyanogenmod/lockclock/weather/OpenWeatherMapProvider.java
+@@ -20,14 +20,17 @@
+     private static final int FORECAST_DAYS = 5;
+     private static final String SELECTION_LOCATION = "lat=%f&lon=%f";
+     private static final String SELECTION_ID = "id=%s";
++    private static final String APP_ID = "e2b075d68c39dc43e16995653fcd6fd0";
+ 
+     private static final String URL_LOCATION =
+-            "http://api.openweathermap.org/data/2.5/find?q=%s&mode=json&lang=%s";
++            "http://api.openweathermap.org/data/2.5/find?q=%s&mode=json&lang=%s&appid="
++            + APP_ID;
+     private static final String URL_WEATHER =
+-            "http://api.openweathermap.org/data/2.5/weather?%s&mode=json&units=%s&lang=%s";
++            "http://api.openweathermap.org/data/2.5/weather?%s&mode=json&units=%s&lang=%s&appid="
++            + APP_ID;
+     private static final String URL_FORECAST =
+             "http://api.openweathermap.org/data/2.5/forecast/daily?" +
+-            "%s&mode=json&units=%s&lang=%s&cnt=" + FORECAST_DAYS;
++            "%s&mode=json&units=%s&lang=%s&cnt=" + FORECAST_DAYS + "&appid=" + APP_ID;
+ 
+     private Context mContext;
+ 
+--- a/AndroidManifest.xml	2017-11-12 16:28:37.000000000 +0300
++++ b/AndroidManifest.xml	2017-11-12 17:27:42.439025391 +0300
+@@ -34,7 +34,6 @@
 
+     <!-- General -->
+     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+     <application
+         android:allowBackup="true"
+--- a/src/com/cyanogenmod/lockclock/weather/WeatherUpdateService.java+	2017-11-12 16:28:37.000000000 +0300
++++ b/src/com/cyanogenmod/lockclock/weather/WeatherUpdateService.java	2017-11-12 17:46:25.000000000 +0300
+@@ -29,8 +29,6 @@
+ import android.os.AsyncTask;
+ import android.os.Bundle;
+ import android.os.IBinder;
+-import android.os.PowerManager;
+-import android.os.PowerManager.WakeLock;
+ import android.os.SystemClock;
+ import android.text.TextUtils;
+ import android.util.Log;
+@@ -148,23 +146,13 @@
+     }
+
+     private class WeatherUpdateTask extends AsyncTask<Void, Void, WeatherInfo> {
+-        private WakeLock mWakeLock;
+         private Context mContext;
+
+         public WeatherUpdateTask() {
+             if (D) Log.d(TAG, "Starting weather update task");
+-            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+-            mWakeLock.setReferenceCounted(false);
+             mContext = WeatherUpdateService.this;
+         }
+
+-        @Override
+-        protected void onPreExecute() {
+-            if (D) Log.d(TAG, "ACQUIRING WAKELOCK");
+-            mWakeLock.acquire();
+-        }
+-
+         private Location getCurrentLocation() {
+             LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+             Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+@@ -273,9 +261,6 @@
+             Intent finishedIntent = new Intent(ACTION_UPDATE_FINISHED);
+             finishedIntent.putExtra(EXTRA_UPDATE_CANCELLED, result == null);
+             sendBroadcast(finishedIntent);
+-
+-            if (D) Log.d(TAG, "RELEASING WAKELOCK");
+-            mWakeLock.release();
+             stopSelf();
+         }
+     }
