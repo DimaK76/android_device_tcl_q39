@@ -33,7 +33,8 @@ image_partitions = {
    'rpm.mbn'           : 'rpm',
    'tz.mbn'            : 'tz',
    'NON-HLOS.bin'      : 'modem',
-   'sbl1.mbn'          : 'sbl1'
+   'sbl1.mbn'          : 'sbl1',
+   'splash.img'        : 'splash'
 }
 
 def FullOTA_InstallEnd(info):
