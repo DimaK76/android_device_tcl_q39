@@ -5,8 +5,6 @@ Log messages under these tags are spammed very hard, destroying logs, and the me
 
 --- a/logprint.c	2017-11-16 00:04:50.991900029 +0300
 +++ b/logprint.c	2017-09-20 03:37:12.000000000 +0300
---- a/liblog/logprint.c
-+++ b/liblog/logprint.c
 @@ -164,7 +164,10 @@ static android_LogPriority filterPriForTag(
  int android_log_shouldPrintLine (
          AndroidLogFormat *p_format, const char *tag, android_LogPriority pri)
