@@ -1,0 +1,21 @@
+Subject: [PATCH] liblog: Silence spammy logs from camera blobs (AEC_PORT and
+ mm-camera)
+
+Log messages under these tags are spammed very hard, destroying logs, and the messages that are spammed are not useful for debugging.
+
+--- a/logprint.c	2017-11-16 00:04:50.991900029 +0300
++++ b/logprint.c	2017-09-20 03:37:12.000000000 +0300
+--- a/liblog/logprint.c
++++ b/liblog/logprint.c
+@@ -164,7 +164,10 @@ static android_LogPriority filterPriForTag(
+ int android_log_shouldPrintLine (
+         AndroidLogFormat *p_format, const char *tag, android_LogPriority pri)
+ {
+-    return pri >= filterPriForTag(p_format, tag);
++    if (!strncmp(tag, "AEC_PORT", 8) || !strncmp(tag, "mm-camera", 9))
++        return 0;
++    else
++        return pri >= filterPriForTag(p_format, tag);
+ }
+
+ AndroidLogFormat *android_log_format_new()
