@@ -1,0 +1,24 @@
+Subject: [PATCH] telephony: Hack GSM and LTE signal strength
+
+makeSignalStrengthFromRilParcel() is used for both solicited and
+unsolicited requests, so we can hack it to send better signal strength
+values to the modem backend. This significantly helps in areas where
+GSM or LTE signal is poor but usable, in which case the modem would often
+disconnect completely or fall back to a lower network mode (resulting in
+poor UX).
+
+Revised to fix the invalid GSM signal strength values (over 31 ASU).
+
+--- a/SignalStrength.java+	2017-09-17 05:58:56.000000000 +0300
++++ b/SignalStrength.java	2017-11-25 19:07:46.860944769 +0300
+@@ -327,6 +327,10 @@
+         ss.mLteRssnr = in.readInt();
+         ss.mLteCqi = in.readInt();
+         ss.mTdScdmaRscp = in.readInt();
++        if (ss.mGsmSignalStrength < 27) ss.mGsmSignalStrength += 3;
++        if (ss.mLteSignalStrength < 91) ss.mLteSignalStrength += 5;
++        if (ss.mLteRsrp != ss.INVALID && ss.mLteRsrp > 49) ss.mLteRsrp -= 5;
++        if (ss.mLteRsrq != ss.INVALID && ss.mLteRsrq > 3) ss.mLteRsrq -= 2;
+         return ss;
+     }
+
