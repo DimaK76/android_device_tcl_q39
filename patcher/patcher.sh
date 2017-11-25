@@ -17,6 +17,8 @@ git -C system/core/rootdir		reset -q --hard
 
 git -C frameworks/base/telephony/java/android/telephony/		clean -dfqx
 git -C frameworks/base/telephony/java/android/telephony/		reset -q --hard
+git -C frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/		clean -dfqx
+git -C frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/		reset -q --hard
 
 ### Patches
 git -C packages/apps/LockClock		apply ~/RR/device/tcl/q39/patcher/patches/packages-apps-LockClock0.patch
@@ -26,4 +28,4 @@ git -C system/core/liblog/		apply ~/RR/device/tcl/q39/patcher/patches/logprint0.
 git -C system/core/rootdir/		apply ~/RR/device/tcl/q39/patcher/patches/init0.patch
 
 git -C frameworks/base/telephony/java/android/telephony/		apply ~/RR/device/tcl/q39/patcher/patches/SignalStrength0.patch
-
+git -C frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/		apply ~/RR/device/tcl/q39/patcher/patches/MusicTile0.patch
