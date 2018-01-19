@@ -1,0 +1,16 @@
+Subject: [PATCH] AssetManager: Point ResXMLTree to a copy of the asset buffer in AssetManager::getPkgName()
+This ensures that there is no dangling pointer when the asset is closed.
+Without this fix, a device ends up in a boot loop when an app is
+installed that was created using aapt2.
+
+--- a/AssetManager.cpp	2017-09-17 05:58:38.000000000 +0300
++++ b/AssetManager.cpp+	2018-01-20 00:57:42.073533337 +0300
+@@ -462,7 +462,7 @@
+
+         Asset* manifestAsset = openNonAssetInPathLocked(kAndroidManifest, Asset::ACCESS_BUFFER, ap);
+         tree.setTo(manifestAsset->getBuffer(true),
+-                       manifestAsset->getLength());
++                       manifestAsset->getLength(), true);
+         tree.restart();
+
+         int depth = 0;
