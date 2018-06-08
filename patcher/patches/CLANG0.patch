@@ -1,0 +1,15 @@
+ошибка: unsupported reloc 42 или 43. Лечится правкой build/core/clang/HOST_x86_common.mk
+
+--- HOST_x86_common.mk	2018-06-08 22:39:33.000000000 +0300
++++ HOST_x86_common.mk+	2018-06-07 23:21:36.000000000 +0300
+@@ -8,7 +8,8 @@
+ CLANG_CONFIG_x86_LINUX_HOST_EXTRA_ASFLAGS := \
+   --gcc-toolchain=$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG) \
+   --sysroot=$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG)/sysroot \
+-  -no-integrated-as
++  -B$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG)/x86_64-linux/bin
++
+ 
+ CLANG_CONFIG_x86_LINUX_HOST_EXTRA_CFLAGS := \
+   --gcc-toolchain=$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG) \
+dimak@dimak-System-Product-Name:~/RR/device/tcl/q39/patcher$ 
