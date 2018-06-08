@@ -1,0 +1,12 @@
+не собирать system.new.dat
+
+--- Makefile	2018-06-08 22:39:33.000000000 +0300
++++ Makefile+	2018-06-08 23:49:36.000000000 +0300
+@@ -1733,7 +1733,6 @@
+ 	@echo -e ${CL_YLW}"Package OTA:"${CL_RST}" $@"
+ 	$(hide) MKBOOTIMG=$(MKBOOTIMG) \
+ 	   $(OTA_FROM_TARGET_SCRIPT) -v \
+-	   --block \
+ 	   $(if $(WITH_LZMA_OTA), -z) \
+ 	   -p $(HOST_OUT) \
+ 	   -k $(KEY_CERT_PAIR) \
