@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# diff -u oldfile newfile+
 # Apply these patches before compilation:
 
 cd ~/RR
