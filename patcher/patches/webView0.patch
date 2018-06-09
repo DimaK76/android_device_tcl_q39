@@ -1,0 +1,11 @@
+--- config.xml	2018-06-03 02:47:18.000000000 +0300
++++ config.xml+	2018-06-10 00:26:00.000000000 +0300
+@@ -2062,7 +2062,7 @@
+     <bool translatable="false" name="config_sms_decode_gsm_8bit_data">false</bool>
+ 
+     <!-- Package name providing default WebView implementation. -->
+-    <string name="config_webViewPackageName" translatable="false">com.android.webview</string>
++    <string name="config_webViewPackageName" translatable="false">com.google.android.webview</string>
+ 
+     <!-- Package name providing alternate WebView implementation.
+          Fall back to config_webViewPackageName if not available. -->
