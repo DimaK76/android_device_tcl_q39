@@ -25,6 +25,9 @@ git -C frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/		cle
 git -C frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/		reset -q --hard
 git -C frameworks/base/libs/androidfw/   clean -dfqx
 git -C frameworks/base/libs/androidfw/   reset -q --hard
+git -C frameworks/base/core/res/res/values/   clean -dfqx
+git -C frameworks/base/core/res/res/values/   reset -q --hard
+
 
 ### Patches
 git -C packages/apps/LockClock		apply ~/RR/device/tcl/q39/patcher/patches/packages-apps-LockClock0.patch
@@ -39,3 +42,4 @@ git -C build/core/    apply ~/RR/device/tcl/q39/patcher/patches/block0.patch
 git -C frameworks/base/telephony/java/android/telephony/		apply ~/RR/device/tcl/q39/patcher/patches/SignalStrength0.patch
 git -C frameworks/base/packages/SystemUI/src/com/android/systemui/qs/tiles/		apply ~/RR/device/tcl/q39/patcher/patches/MusicTile0.patch
 git -C frameworks/base/libs/androidfw/   apply ~/RR/device/tcl/q39/patcher/patches/AssetManager0.patch
+git -C frameworks/base/core/res/res/values/   apply ~/RR/device/tcl/q39/patcher/patches/webView0.patch
